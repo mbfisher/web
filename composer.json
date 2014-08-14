@@ -1,0 +1,23 @@
+{
+    "name": "mbfisher/web",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Mike Fisher",
+            "email": "mike@mbfisher.com"
+        }
+    ],
+    "require": {
+        "symfony/http-foundation": "~2.5",
+        "symfony/http-kernel": "~2.5"
+    },
+    "require-dev": {
+        "task/task": "~0.6",
+        "task/phpunit": "@stable"
+    },
+    "autoload": {
+        "psr-4": {
+            "mbfisher\\Web\\": "src/"
+        }
+    }
+}
