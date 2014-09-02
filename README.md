@@ -11,7 +11,7 @@ $router = new Router(new UrlMatcher);
 $router->add(new Route('GET', '/', 'example'));
 
 $dispatcher = new ClosureDispatcher([
-    'example' => function () use ($response) {
+    'example' => function () {
         return new Response;
     }
 ]);
