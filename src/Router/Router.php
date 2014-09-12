@@ -18,17 +18,11 @@ class Router implements RouterInterface
     public function __construct(UrlMatcherInterface $matcher)
     {
         $this->matcher = $matcher;
-
         $this->configure();
     }
 
     protected function configure()
     {
-    }
-
-    public function getRoutes()
-    {
-        return $this->routes;
     }
 
     public function getMatcher()
