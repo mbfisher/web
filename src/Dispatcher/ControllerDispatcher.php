@@ -4,9 +4,9 @@ namespace mbfisher\Web\Dispatcher;
 
 use mbfisher\Web\Controller\ControllerFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
-use mbfisher\Web\Route\Context;
+use mbfisher\Web\Dispatcher\Context;
 use mbfisher\Web\Route\RouteInterface;
-use mbfisher\Web\Exception\ROuting\MethodNotAllowedException;
+use BadMethodCallException;
 
 /**
  * Dispatches to controller objects whose method names map to HTTP request
@@ -21,6 +21,11 @@ class ControllerDispatcher implements DispatcherInterface
         $this->factory = $factory;
     }
 
+    public function getFactory()
+    {
+        return $this->factory;
+    }
+
     public function dispatch(Request $request, Context $context)
     {
         $handler = $context->getHandler();
@@ -29,8 +34,9 @@ class ControllerDispatcher implements DispatcherInterface
         $controller = $this->getFactory()->build($handler);
         $variables = $context->getVariables();
 
-        if (!method_exists($method, $controller)) {
-            throw new RoutingFailedException("Method $method not found on handler $handler");
+        $method = $request->getMethod();
+        if (!method_exists($controller, $method)) {
+            throw new BadMethodCallException("Method $method not found on handler $handler");
         }
 
         return call_user_func([$controller, strtolower($method)], $request, $variables);

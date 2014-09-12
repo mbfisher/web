@@ -68,7 +68,7 @@ class Router implements RouterInterface
         $method = $request->getMethod();
 
         foreach ($this->handlers as $pattern => $handler) {
-            if (false === $variables = $this->matcher->match($pattern, $path)) {
+            if (false === $variables = $this->getMatcher()->match($pattern, $path)) {
                 continue;
             }
 

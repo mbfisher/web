@@ -40,6 +40,7 @@ class Application implements HttpKernelInterface
             $context = $this->getRouter()->run($request);
             return $this->getDispatcher()->dispatch($request, $context);
         } catch (Exception $ex) {
+            throw $ex;
             if ($ex instanceof RoutingFailureException) {
                 return $this->handleRoutingFailure($request, $ex);
             }
