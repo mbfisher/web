@@ -16,4 +16,19 @@ class MethodNotAllowedException extends RoutingFailureException
 
         parent::__construct("Method $method not allowed for $path");
     }
+
+    public function getMethod()
+    {
+        return $this->method;
+    }
+
+    public function getPath()
+    {
+        return $this->path;
+    }
+
+    public function getAllowedMethods()
+    {
+        return $this->allowed;
+    }
 }

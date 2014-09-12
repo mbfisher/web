@@ -24,20 +24,27 @@ class ControllerDispatcher implements DispatcherInterface
     public function dispatch(Request $request, Context $context)
     {
         $handler = $context->getHandler();
-        $controller = $this->getFactory()->build($handler);
+        list($handler, $action) = $this->extractComponents($handler, $request);
 
-        $method = $request->getMethod();
+        $controller = $this->getFactory()->build($handler);
         $variables = $context->getVariables();
 
-        if ($method === RouteInterface::METHOD_OPTIONS) {
-            return $controller->options($request, $variables);
-        }
-
-        $allowed = $controller->getAllowedMethods();
-        if (!in_array($method, $allowed)) {
-            throw new MethodNotAllowedException($allowed);
+        if (!method_exists($method, $controller)) {
+            throw new RoutingFailedException("Method $method not found on handler $handler");
         }
 
         return call_user_func([$controller, strtolower($method)], $request, $variables);
+    }
+
+    protected function extractComponents($handler, Request $request)
+    {
+        $components = explode(':', $handler, 2);
+
+        if (count($components) === 1) {
+            $method = $request->getMethod();
+            $components = [$handler, strtolower($method)];
+        }
+
+        return $components;
     }
 }

@@ -25,32 +25,46 @@ class Router implements RouterInterface
     {
     }
 
-    public function add(RouteInterface $route)
+    public function addRoute(RouteInterface $route)
     {
+        $pattern = $route->getPattern();
         $method = $route->getMethod();
+        $handler = $route->getHandler();
 
-        if (!isset($this->routes[$method])) {
-            $this->routes[$method] = [];
+        $this->handlers[$pattern] = $handler;
+
+        if (!isset($this->methods[$handler])) {
+            $this->methods[$handler] = [];
         }
 
-        $pattern = $route->getPattern();
-        $this->routes[$method][$pattern] = $route->getHandler();
+        $this->methods[$handler] += [$method];
+
+        return $this;
+    }
+
+    public function addCollection(RouteCollectionInterface $collection)
+    {
+        foreach ($collection->getRoutes() as $route) {
+            $this->addRoute($route);
+        }
 
         return $this;
     }
 
     public function run(Request $request)
     {
-        $method = $request->getMethod();
         $path = $request->getPathInfo();
+        $method = $request->getMethod();
 
-        if (!isset($this->routes[$method])) {
-            throw new MethodNotAllowedException($method, $path, array_keys($this->routes));
-        }
+        foreach ($this->handlers as $pattern => $handler) {
+            if (false === $variables = $this->matcher->match($pattern, $path)) {
+                continue;
+            }
 
-        foreach ($this->routes[$method] as $pattern => $handler) {
-            if (false !== $variables = $this->matcher->match($pattern, $path)) {
+            if (in_array($method, $this->methods[$handler])) {
                 return new Context($handler, $variables);
+            } else {
+                throw new MethodNotAllowedException($method, $path, $this->methods[$handler]);
             }
         }
 

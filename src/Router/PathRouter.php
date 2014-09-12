@@ -12,7 +12,7 @@ class PathRouter extends Router implements RouterInterface
     public function add(RouteInterface $route)
     {
         $pattern = $route->getPattern();
-        $this->routes[$patter] = $route->getHandler();
+        $this->routes[$pattern] = $route->getHandler();
 
         return $this;
     }

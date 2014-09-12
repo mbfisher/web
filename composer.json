@@ -12,8 +12,11 @@
         "symfony/http-kernel": "~2.5"
     },
     "require-dev": {
+        "phpspec/phpspec": "2.0.*@dev",
+        "phpunit/phpunit": "~4.0",
         "task/task": "~0.6",
-        "task/phpunit": "@stable"
+        "task/phpunit": "@stable",
+        "task/phpspec": "@stable"
     },
     "autoload": {
         "psr-4": {

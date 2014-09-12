@@ -17,7 +17,7 @@ class AcceptanceTest extends \PHPUnit_Framework_TestCase
         $response = new Response;
 
         $router = new Router(new UrlMatcher);
-        $router->add(new Route('GET', '/', 'test'));
+        $router->addRoute(new Route('GET', '/', 'test'));
 
         $dispatcher = new ClosureDispatcher([
             'test' => function () use ($response) {

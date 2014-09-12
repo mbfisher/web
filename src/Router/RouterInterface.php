@@ -7,7 +7,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 interface RouterInterface
 {
-    public function add(RouteInterface $route);
+    public function addRoute(RouteInterface $route);
+    public function addCollection(RouteCollectionInterface $collection);
 
     /**
      * @return RouteInterface
