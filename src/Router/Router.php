@@ -12,17 +12,28 @@ use mbfisher\Web\Dispatcher\Context;
 class Router implements RouterInterface
 {
     private $matcher;
-    protected $routes;
+    private $handlers = [];
+    private $methods = [];
 
-    public function __construct(UrlMatcherInterface $matcher, array $routes = [])
+    public function __construct(UrlMatcherInterface $matcher)
     {
         $this->matcher = $matcher;
-        $this->routes = $routes;
+
         $this->configure();
     }
 
     protected function configure()
     {
+    }
+
+    public function getRoutes()
+    {
+        return $this->routes;
+    }
+
+    public function getMatcher()
+    {
+        return $this->matcher;
     }
 
     public function addRoute(RouteInterface $route)
