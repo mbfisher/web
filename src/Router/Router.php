@@ -42,7 +42,7 @@ class Router implements RouterInterface
             $this->methods[$handler] = [];
         }
 
-        $this->methods[$handler] += [$method];
+        $this->methods[$handler][] = $method;
 
         return $this;
     }
