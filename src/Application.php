@@ -68,6 +68,7 @@ class Application implements HttpKernelInterface
 
     public function handleException(Request $request, Exception $ex)
     {
-        return new Response($ex->getMessage(), Response::HTTP_INTERNAL_SERVER_ERROR);
+        $content = sprintf('[%s] %s', get_class($ex), $ex->getMessage());
+        return new Response($content, Response::HTTP_INTERNAL_SERVER_ERROR);
     }
 }
